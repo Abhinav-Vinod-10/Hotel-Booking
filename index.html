@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StayLuxe - Premium Hotel Booking Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h2>🏨 StayLuxe</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#" onclick="showPage('home')">Home</a></li>
+                <li><a href="#" onclick="showPage('search')">Hotels</a></li>
+                <li><a href="#" onclick="showPage('profile')">My Bookings</a></li>
+                <li><button class="btn btn--primary btn--sm" onclick="toggleAuth()">Sign In</button></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Homepage -->
+    <div id="home-page" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Discover Your Perfect Stay</h1>
+                <p>Book premium hotels worldwide with the best prices and instant confirmation</p>
+                
+                <!-- Search Form -->
+                <div class="search-form">
+                    <div class="search-input">
+                        <label>Where</label>
+                        <select id="location-select">
+                            <option value="">Select destination</option>
+                            <option value="Mumbai">Mumbai</option>
+                            <option value="Delhi">Delhi</option>
+                            <option value="Goa">Goa</option>
+                            <option value="Jaipur">Jaipur</option>
+                            <option value="Udaipur">Udaipur</option>
+                            <option value="Manali">Manali</option>
+                        </select>
+                    </div>
+                    <div class="search-input">
+                        <label>Check-in</label>
+                        <input type="date" id="checkin-date">
+                    </div>
+                    <div class="search-input">
+                        <label>Check-out</label>
+                        <input type="date" id="checkout-date">
+                    </div>
+                    <div class="search-input">
+                        <label>Guests</label>
+                        <select id="guests-select">
+                            <option value="1">1 Guest</option>
+                            <option value="2">2 Guests</option>
+                            <option value="3">3 Guests</option>
+                            <option value="4">4 Guests</option>
+                            <option value="5">5+ Guests</option>
+                        </select>
+                    </div>
+                    <button class="btn btn--primary search-btn" onclick="searchHotels()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+            </div>
+            <div class="hero-background"></div>
+        </section>
+
+        <!-- Featured Hotels -->
+        <section class="featured-section">
+            <div class="container">
+                <h2>Featured Hotels</h2>
+                <div class="hotels-grid" id="featured-hotels"></div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="testimonials-section">
+            <div class="container">
+                <h2>What Our Guests Say</h2>
+                <div class="testimonials-grid" id="testimonials"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Search Results Page -->
+    <div id="search-page" class="page">
+        <div class="container">
+            <div class="search-header">
+                <h2>Search Results</h2>
+                <div class="search-filters">
+                    <select id="sort-select">
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="rating">Rating</option>
+                    </select>
+                    <div class="price-filter">
+                        <label>Price Range: ₹<span id="price-value">10000</span></label>
+                        <input type="range" id="price-range" min="3000" max="20000" value="10000">
+                    </div>
+                    <select id="rating-filter">
+                        <option value="">All Ratings</option>
+                        <option value="4.5">4.5+ Stars</option>
+                        <option value="4.0">4.0+ Stars</option>
+                    </select>
+                </div>
+            </div>
+            <div class="search-results" id="search-results"></div>
+        </div>
+    </div>
+
+    <!-- Hotel Detail Page -->
+    <div id="detail-page" class="page">
+        <div class="container">
+            <div id="hotel-detail"></div>
+        </div>
+    </div>
+
+    <!-- Booking Page -->
+    <div id="booking-page" class="page">
+        <div class="container">
+            <div class="booking-container">
+                <div class="booking-form">
+                    <h2>Complete Your Booking</h2>
+                    <form id="booking-form">
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Special Requests</label>
+                            <textarea class="form-control" rows="3" placeholder="Any special requirements..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full-width">Proceed to Payment</button>
+                    </form>
+                </div>
+                <div class="booking-summary" id="booking-summary"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Page -->
+    <div id="payment-page" class="page">
+        <div class="container">
+            <div class="payment-container">
+                <div class="payment-methods">
+                    <h2>Choose Payment Method</h2>
+                    <div class="payment-options">
+                        <div class="payment-option active" onclick="selectPayment('upi')">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>UPI Payment</span>
+                        </div>
+                        <div class="payment-option" onclick="selectPayment('card')">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Credit/Debit Card</span>
+                        </div>
+                        <div class="payment-option" onclick="selectPayment('netbanking')">
+                            <i class="fas fa-university"></i>
+                            <span>Net Banking</span>
+                        </div>
+                    </div>
+
+                    <!-- UPI Payment Form -->
+                    <div id="upi-form" class="payment-form active">
+                        <h3>UPI Payment</h3>
+                        <div class="form-group">
+                            <label class="form-label">UPI ID</label>
+                            <input type="text" id="upi-id" class="form-control" placeholder="yourname@paytm" required>
+                        </div>
+                        <div class="upi-apps">
+                            <div class="upi-app" onclick="selectUpiApp('gpay')">Google Pay</div>
+                            <div class="upi-app" onclick="selectUpiApp('phonepe')">PhonePe</div>
+                            <div class="upi-app" onclick="selectUpiApp('paytm')">Paytm</div>
+                        </div>
+                        <button class="btn btn--primary btn--full-width" onclick="generateQR()">Generate QR Code</button>
+                    </div>
+
+                    <!-- QR Code Display -->
+                    <div id="qr-section" class="qr-section hidden">
+                        <h3>Scan QR Code to Pay</h3>
+                        <div class="qr-code" id="qr-code">
+                            <div class="qr-placeholder">
+                                <i class="fas fa-qrcode"></i>
+                                <p>QR Code will appear here</p>
+                            </div>
+                        </div>
+                        <div class="payment-amount" id="payment-amount"></div>
+                        <button class="btn btn--secondary btn--full-width" onclick="simulatePayment()">Simulate Payment Success</button>
+                    </div>
+                </div>
+                <div class="payment-summary" id="payment-summary"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Page -->
+    <div id="confirmation-page" class="page">
+        <div class="container">
+            <div class="confirmation-content">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>Booking Confirmed!</h2>
+                <p>Your booking has been successfully confirmed. A confirmation email has been sent to your email address.</p>
+                <div id="booking-details"></div>
+                <div class="confirmation-actions">
+                    <button class="btn btn--primary" onclick="showPage('home')">Back to Home</button>
+                    <button class="btn btn--secondary" onclick="showPage('profile')">View My Bookings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Page -->
+    <div id="profile-page" class="page">
+        <div class="container">
+            <h2>My Bookings</h2>
+            <div id="booking-history"></div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Sign In</h3>
+                <span class="close" onclick="toggleAuth()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Sign In</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
